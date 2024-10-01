@@ -2,122 +2,119 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataRetrievalFailureException;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
+import java.sql.SQLException;
 import java.util.List;
 
-// method to connect from util class
-import static jm.task.core.jdbc.util.Util.HibernateConnection;
-
+@Repository
+@SuppressWarnings("deprecation") // for backwards compatibility
+@Transactional(rollbackFor = SQLException.class) // for handling SQL exceptions in a transactional manner
 public class UserDaoHibernateImpl implements UserDao {
+    private static final Logger logger = LoggerFactory.getLogger(UserDaoHibernateImpl.class);
+    private final SessionFactory sessionFactory;
 
-    public UserDaoHibernateImpl() {
-        // empty for Reflection API of Hibernate
+    @Autowired
+    public UserDaoHibernateImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
     public void createUsersTable() {
-        Transaction transaction = null; // for if cycle in catch block
-        try (Session session = HibernateConnection().openSession()) {
-            transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS users (" +
-                    "id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL," +
-                    "name VARCHAR(45) NOT NULL," +
-                    "lastname VARCHAR(45) NOT NULL," +
-                    "age INTEGER(3) NULL)")
-                    .executeUpdate();
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) { //  need if code have errors in transaction for good ending
-                transaction.rollback();
-            }
-            throw new RuntimeException("error with createUsersTable method - ", e);
+        logger.debug("Creating users table");
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            NativeQuery<?> query = session.createNativeQuery("CREATE TABLE IF NOT EXISTS users (" +
+                    "id BIGINT PRIMARY KEY AUTO_INCREMENT," +
+                    "name VARCHAR(45)," +
+                    "lastname VARCHAR(45)," +
+                    "age TINYINT)");
+            query.executeUpdate();
+            logger.info("Users table created successfully.");
+        } catch (RuntimeException e) {
+            logger.error("Failed to create users table", e);
         }
     }
 
     @Override
     public void dropUsersTable() {
-        Transaction transaction = null;
-        try (Session session = HibernateConnection().openSession()) {
-            transaction = session.beginTransaction();
-            session.createSQLQuery("DROP TABLE IF EXISTS users").executeUpdate();
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new RuntimeException("error with dropUsersTable method - ", e);
+        logger.debug("Start dropping users table");
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            NativeQuery<?> query = session.createNativeQuery("DROP TABLE IF EXISTS users");
+            query.executeUpdate();
+            logger.info("Users table dropped successfully.");
+        } catch (RuntimeException e) {
+            logger.error("Error dropping Users table.", e);
         }
     }
 
     @Override
     public void saveUser(String name, String lastName, byte age) {
-        Transaction transaction = null;
-        try (Session session = HibernateConnection().openSession()) {
-            transaction = session.beginTransaction();
-            session.save(new User(null, name, lastName, age));
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new RuntimeException("error with saveUser method - ", e);
+        logger.debug("Start saving User");
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            User user = new User(null, name, lastName, age);
+            session.save(user);
+            logger.info("User saved: {}", user);
+        } catch (RuntimeException e) {
+            logger.error("Error saving User", e);
         }
     }
 
     @Override
     public void removeUserById(long id) {
-        Transaction transaction = null;
-        try (Session session = HibernateConnection().openSession()) {
-            transaction = session.beginTransaction();
-            session.delete(session.load(User.class, id));
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
+        logger.debug("Start deleting User with id: {}", id);
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            User user = session.get(User.class, id);
+            if (user != null) {
+                session.delete(user);
+                logger.info("User deleted with id: {}", id);
             }
-            throw new RuntimeException("error with removeUserById method - ", e);
+        } catch (RuntimeException e) {
+            logger.error("Error deleting User with id: {}", id, e);
         }
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        Transaction transaction = null;
-        try (Session session = HibernateConnection().openSession()) {
-            transaction = session.beginTransaction();
-            List<User> users = session.createQuery("FROM User", User.class).list();
-            transaction.commit();
+        logger.debug("Start retrieving all Users");
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            List<User> users = session.createQuery("from User", User.class).getResultList();
+            logger.info("All users retrieved.");
             return users;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new RuntimeException("error with getAllUsers method - ", e);
+        } catch (RuntimeException e) {
+            throw new DataRetrievalFailureException("Error with getAllUsers method", e);
         }
     }
 
     @Override
     public void cleanUsersTable() {
-        Transaction transaction = null;
-        try (Session session = HibernateConnection().openSession()) {
-            transaction = session.beginTransaction();
-            session.createSQLQuery("TRUNCATE TABLE users").executeUpdate();
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw new RuntimeException("error with cleanUsersTable method - ", e);
-        }
-    }
+        logger.debug("Start cleaning Users table");
+        try {
+            Session session = sessionFactory.getCurrentSession();
 
-    // моя доработка для изучения Hibernate
-    public List<User> getById(long id) {
-        try (Session session = HibernateConnection().openSession()) {
-            return Collections.singletonList(session.get(User.class, id));
-        } catch (Exception e) {
-            throw new RuntimeException("error with getById method - ", e);
+            // check table if exists
+            List<?> result = session.createNativeQuery("SHOW TABLES LIKE 'users'").getResultList();
+            if (!result.isEmpty()) {
+                // if table exists, truncate
+                session.createNativeQuery("TRUNCATE TABLE users").executeUpdate();
+                logger.info("Users table cleaned successfully.");
+            } else {
+                logger.warn("Users table doesn't exist.");
+            }
+        } catch (RuntimeException e) {
+            logger.error("Error cleaning Users table.", e);
         }
     }
 }

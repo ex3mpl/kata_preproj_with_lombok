@@ -1,11 +1,12 @@
 package jm.task.core.jdbc.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable; // for correct work with Hibernate
 
 @Data                   // equals and hashCode; getters and setters; and more
@@ -15,6 +16,8 @@ import java.io.Serializable; // for correct work with Hibernate
 @Entity                 // this class is entity of Hibernate
 @Table(name = "users")  // table name of database
 public class User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 42L;
 
     @Id     // primary (first) key ---- ID type needs to be Serializable
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment ID value in table

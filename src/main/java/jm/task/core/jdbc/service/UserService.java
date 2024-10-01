@@ -1,6 +1,8 @@
 package jm.task.core.jdbc.service;
 
 import jm.task.core.jdbc.model.User;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -11,7 +11,8 @@ import static jm.task.core.jdbc.util.Util.getConnection;
 public class UserDaoJDBCImpl implements UserDao {
     Connection connection = getConnection();
 
-    public UserDaoJDBCImpl() {
+    public UserDaoJDBCImpl() throws SQLException {
+        // this constructor is empty because of task 1.1.3 requirements
     }
 
     public void createUsersTable() throws SQLException {

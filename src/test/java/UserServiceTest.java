@@ -1,18 +1,26 @@
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.service.UserService;
-import jm.task.core.jdbc.service.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
+@RunWith(SpringJUnit4ClassRunner.class) // annotation for junit 4
+@ContextConfiguration(locations = "classpath*:applicationContext.xml")
 public class UserServiceTest {
-    private final UserService userService = new UserServiceImpl();
+
+    @Autowired
+    @Qualifier("userService") // bean in spring conf xml
+    private UserService userService;
 
     private final String testName = "Ivan";
     private final String testLastName = "Ivanov";
     private final byte testAge = 5;
-
 
     @Test
     public void dropUsersTable() {
@@ -41,7 +49,7 @@ public class UserServiceTest {
             userService.createUsersTable();
             userService.saveUser(testName, testLastName, testAge);
 
-            User user = userService.getAllUsers().get(0);
+            User user = userService.getAllUsers().getFirst();
 
             if (!testName.equals(user.getName())
                     || !testLastName.equals(user.getLastName())
@@ -91,12 +99,11 @@ public class UserServiceTest {
             userService.saveUser(testName, testLastName, testAge);
             userService.cleanUsersTable();
 
-            if (userService.getAllUsers().size() != 0) {
+            if (!userService.getAllUsers().isEmpty()) {
                 Assert.fail("Метод очищения таблицы пользователей реализован не корректно");
             }
         } catch (Exception e) {
             Assert.fail("При тестировании очистки таблицы пользователей произошло исключение\n" + e);
         }
     }
-
 }
