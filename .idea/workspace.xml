@@ -4,29 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cbfdcc-b4aa-4a75-99d1-ba9c150e9cd7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/kata_preproj_with_lombok.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7edd6dca-c05e-4f3b-8fb2-78951323f84f.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7edd6dca-c05e-4f3b-8fb2-78951323f84f/storage_v2/_src_/schema/userdao.5_869w.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TaskJDBC.iml" beforeDir="false" afterPath="$PROJECT_DIR$/TaskJDBC.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/dao/UserDaoHibernateImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/dao/UserDaoJDBCImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/util/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jm/task/core/jdbc/util/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/UserServiceTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="44cbfdcc-b4aa-4a75-99d1-ba9c150e9cd7" name="Changes" comment="Commit changes:&#10;- Added Spring support for implementing auto-transactions;&#10;- Added logging using slf4j + log4j;&#10;- All exceptions and errors related to the operation of the program have been processed;&#10;- Instructions for each annotation and method are provided;&#10;- Exceptions were processed in the project according to the SonarLint revision;" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,6 +21,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -85,6 +64,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
     "Spring Boot.Application.executor": "Run",
     "dart.analysis.tool.window.visible": "false",
     "git-widget-placeholder": "master",
@@ -113,7 +93,7 @@
       <recent name="C:\Users\f7ck\IdeaProjects\kata_preproj_with_lombok" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.UserServiceTest.dropUsersTable">
+  <component name="RunManager">
     <configuration name="UserServiceTest.createUsersTable" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="kata_preproj_with_lombok" />
       <option name="PACKAGE_NAME" value="" />
@@ -160,12 +140,25 @@
       <workItem from="1726760055223" duration="10675000" />
       <workItem from="1727448151601" duration="8430000" />
       <workItem from="1727708223443" duration="3253000" />
-      <workItem from="1727800178626" duration="6465000" />
+      <workItem from="1727800178626" duration="7054000" />
     </task>
+    <task id="LOCAL-00001" summary="Commit changes:&#10;- Added Spring support for implementing auto-transactions;&#10;- Added logging using slf4j + log4j;&#10;- All exceptions and errors related to the operation of the program have been processed;&#10;- Instructions for each annotation and method are provided;&#10;- Exceptions were processed in the project according to the SonarLint revision;">
+      <option name="closed" value="true" />
+      <created>1727813616847</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1727813616847</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Commit changes:&#10;- Added Spring support for implementing auto-transactions;&#10;- Added logging using slf4j + log4j;&#10;- All exceptions and errors related to the operation of the program have been processed;&#10;- Instructions for each annotation and method are provided;&#10;- Exceptions were processed in the project according to the SonarLint revision;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit changes:&#10;- Added Spring support for implementing auto-transactions;&#10;- Added logging using slf4j + log4j;&#10;- All exceptions and errors related to the operation of the program have been processed;&#10;- Instructions for each annotation and method are provided;&#10;- Exceptions were processed in the project according to the SonarLint revision;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
